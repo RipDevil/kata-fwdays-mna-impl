@@ -18,6 +18,6 @@ export const SessionManager = {
         SessionManager.sessions = new Map();
     },
     getSession: uid => {
-        SessionManager.sessions.get(uid);
+        return SessionManager.sessions.get(uid);
     },
 };
