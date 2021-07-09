@@ -6,6 +6,8 @@ export const SessionManager = {
         const sessionId = randomUUID();
         const sessionExpiryDate = new Date(Date.now + 1000 * 60 * 5);
         SessionManager.sessions.set(sessionId, sessionExpiryDate);
+
+        return SessionManager.getSession(sessionId);
     },
     deleteSession: uid => {
         SessionManager.sessions.delete(uid);
