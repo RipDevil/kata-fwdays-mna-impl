@@ -3,13 +3,17 @@ import { showPaths } from './utils/show-paths.js';
 import { readFile } from 'fs/promises';
 import { exec } from 'child_process';
 
-export const startServer = (port = 8080) => {
+let uploadPassword;
+
+export const startServer = (port, password) => {
     server.listen(port, () => {
         console.log('\nThe server is reachable on:');
 
         showPaths(addr => {
             console.log(`${addr}:${port}`);
         });
+
+        uploadPassword = password;
     });
 
     setTimeout(() => {
@@ -18,8 +22,23 @@ export const startServer = (port = 8080) => {
 };
 
 async function performLogin(request, response) {
-    response.statusCode = 500;
-    response.end();
+    let body = '';
+    for await (const chunk of request) body += chunk;
+
+    const formData = new URLSearchParams(body);
+
+    const userPassword = formData.get('password');
+
+    if (userPassword === uploadPassword) {
+        // TODO: save session
+
+        response.statusCode = 302;
+        response.setHeader('Location', `${request.headers.referer}`);
+        response.end();
+    } else {
+        response.statusCode = 401;
+        response.end();
+    }
 }
 
 async function serveContent(request, response) {
