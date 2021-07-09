@@ -8,7 +8,13 @@
 </head>
 
 <body>
-    Hello from html!
+    <details id="loginForm" open>
+        <summary>Login to enable file upload</summary>
+        <form action="/login" method="post">
+            <p><label for="password">Password: </label><input id="password" type="password" name="password"></p>
+            <p><input type="submit" name="login" value="Login"></p>
+        </form>
+    </details>
     <script type="module">
         console.log('Hello from console in script!');
     </script>
