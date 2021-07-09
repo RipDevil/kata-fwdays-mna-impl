@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mna Kata</title>
+    <style>
+        .error input[type="password"] {
+            border: 1px solid red;
+            border-radius: 2rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,7 +22,29 @@
         </form>
     </details>
     <script type="module" nonce="NONCE">
-        console.log('Hello from console in script!');
+        document.getElementById('loginForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const form = event.target;
+            const inputs = [...form.querySelectorAll('input')];
+
+            const formData = new URLSearchParams(inputs.map(input => [input.name, input.value]));
+
+            const res = await fetch(form.action, {
+                method: form.method,
+                body: formData
+            });
+
+            if (res.ok) {
+                form.classList.remove('error');
+                setTimeout(() => {
+                    document.getElementById('loginForm').open = false;
+                }, 800);
+            } else {
+                form.classList.add('error');
+            }
+        });
     </script>
 </body>
 
