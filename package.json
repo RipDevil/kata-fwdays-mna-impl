@@ -4,11 +4,23 @@
     "main": "src/cli.js",
     "type": "module",
     "scripts": {
-        "start": "nodemon .",
-        "format": "prettier --single-quote --arrow-parens=avoid --write ./src/**/*.js"
+        "start": "nodemon ."
     },
     "devDependencies": {
+        "husky": "^4.3.8",
+        "lint-staged": "^11.0.0",
         "nodemon": "^2.0.10",
         "prettier": "^2.3.2"
-    }
+    },
+    "husky": {
+        "hooks": {
+          "pre-commit": "lint-staged"
+        }
+      },
+      "lint-staged": {
+        "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+          "prettier --single-quote --arrow-parens=avoid"
+        ]
+      }
+
 }
