@@ -12,6 +12,6 @@ export const startServer = (port = 8080) => {
 };
 
 const server = http.createServer((request, response) => {
-    response.write("Hello from server\n");
+    response.write("\nHello from server\n");
     response.end();
 });
