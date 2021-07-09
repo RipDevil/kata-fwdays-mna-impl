@@ -4,10 +4,10 @@ export const SessionManager = {
     sessions: new Map(),
     createSession: () => {
         const sessionId = randomUUID();
-        const sessionExpiryDate = new Date(Date.now + 1000 * 60 * 5);
+        const sessionExpiryDate = new Date(Date.now() + 1000 * 60 * 5);
         SessionManager.sessions.set(sessionId, sessionExpiryDate);
 
-        return SessionManager.getSession(sessionId);
+        return { sessionId, sessionExpiryDate };
     },
     deleteSession: uid => {
         SessionManager.sessions.delete(uid);
@@ -17,7 +17,7 @@ export const SessionManager = {
             console.log('MUAHAHAHAHAHHA YOUR SESSIONS HAS BEEN !!!DELETED!!!');
         SessionManager.sessions = new Map();
     },
-    getSession: uid => {
-        return SessionManager.sessions.get(uid);
+    checkSession: uid => {
+        return true;
     },
 };
