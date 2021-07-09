@@ -1,3 +1,4 @@
+import { SessionManager } from '../services/session-service.js';
 import { readStream } from '../utils/read-stream.js';
 
 const _performLogin = async (request, response) => {
@@ -8,7 +9,16 @@ const _performLogin = async (request, response) => {
     const uploadPassword = process.env.PASSWORD || '123';
 
     if (userPassword === uploadPassword) {
-        // TODO: save session
+        const session = SessionManager.createSession();
+
+        response.setHeader(
+            'Set-Cookie',
+            [
+                `session=${session.sessionId}`,
+                `Espires=${session.sessionExpiryDate.toISOString()}`,
+                `HttpOnly`,
+            ].join(';')
+        );
 
         response.statusCode = 302;
         response.setHeader('Location', `${request.headers.referer}`);
