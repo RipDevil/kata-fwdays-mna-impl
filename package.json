@@ -1,8 +1,12 @@
 {
-  "name": "kata-fwdays-mna",
-  "private": true,
-  "main": "src/cli.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+    "name": "kata-fwdays-mna",
+    "private": true,
+    "main": "src/cli.js",
+    "scripts": {
+        "start": "node .",
+        "format": "prettier --single-quote --arrow-parens=avoid --write ./src/**/*.js"
+    },
+    "devDependencies": {
+        "prettier": "^2.3.2"
+    }
 }
