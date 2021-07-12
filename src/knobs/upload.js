@@ -20,6 +20,7 @@ const _performUpload = async (request, response) => {
         });
     });
 
+    console.log('uploadFile :>> ', uploadFile);
     let newPath = pathJoin(
         root,
         new URL(request.headers.referer).pathname,
@@ -33,10 +34,12 @@ const _performUpload = async (request, response) => {
     } catch (e) {}
 
     // @mna: rename isn't working if you're moving from another mounted drive
-    await pipeline(
-        createReadStream(uploadFile.path),
-        createWriteStream(newPath)
-    );
+    if (uploadFile.size > 0) {
+        await pipeline(
+            createReadStream(uploadFile.path),
+            createWriteStream(newPath)
+        );
+    }
 
     redirectBack(request, response);
 };
@@ -45,5 +48,5 @@ export const performUpload = {
     handler: _performUpload,
     method: 'POST',
     url: '/upload',
-    auth: false,
+    auth: true,
 };

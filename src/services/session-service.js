@@ -18,6 +18,9 @@ export const SessionManager = {
         SessionManager.sessions = new Map();
     },
     checkSession: uid => {
-        return true;
+        return (
+            SessionManager.sessions.has(uid) &&
+            SessionManager.sessions.get(uid) > new Date()
+        );
     },
 };
