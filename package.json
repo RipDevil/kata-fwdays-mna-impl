@@ -3,6 +3,9 @@
   "private": true,
   "main": "src/cli.js",
   "type": "module",
+  "bin": {
+      "kata": "src/cli.js"
+  },
   "scripts": {
     "start": "nodemon ."
   },
