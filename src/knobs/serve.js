@@ -1,10 +1,10 @@
 import { pipeline } from 'stream/promises';
 import { randomUUID } from 'crypto';
-import { readFile, access, stat, opendir } from 'fs/promises';
+import { readFile, access, stat } from 'fs/promises';
 import { join as pathJoin } from 'path';
 import { createReadStream } from 'fs';
 
-import { readDir } from '../utils/read-dir.js';
+import { listingStream } from './lib/listing-stream.js';
 
 const root = process.cwd();
 
@@ -13,6 +13,7 @@ const _serveContent = async (request, response) => {
     const path = url.pathname;
     const absolutePath = pathJoin(root, path);
     const { relativePath } = /\/(?<relativePath>.*)/.exec(path).groups;
+    const isDownload = !!url.searchParams.get('download');
     let isDir;
 
     try {
@@ -22,6 +23,11 @@ const _serveContent = async (request, response) => {
     } catch (e) {
         response.statusCode = 404;
         response.end();
+        return;
+    }
+
+    if (isDownload && !isDir) {
+        await pipeline(createReadStream(absolutePath), response);
         return;
     }
 
@@ -42,7 +48,7 @@ const _serveContent = async (request, response) => {
 
     if (isDir) {
         await pipeline(
-            listing(absolutePath, relativePath),
+            listingStream(absolutePath, relativePath),
             async function* (stream) {
                 for await (const chunk of stream) yield chunk;
                 yield footer;
@@ -62,37 +68,6 @@ const _serveContent = async (request, response) => {
         );
     }
 };
-
-async function* listing(absolutePath, relativePath) {
-    const rootInfo = await opendir(absolutePath);
-    const [dirs, files] = await readDir(rootInfo);
-
-    yield '<ul>';
-
-    dirs.sort();
-    for (const name of dirs) {
-        yield `
-            <li>
-                <a href="${relativePath}/${name}">
-                    /${name}
-                </a>
-            </li>
-        `;
-    }
-
-    files.sort();
-    for (const name of files) {
-        yield `
-            <li>
-                <a href="${relativePath}/${name}">
-                    ${name}
-                </a>
-            </li>
-        `;
-    }
-
-    yield '</ul>';
-}
 
 export const serveContent = {
     handler: _serveContent,
