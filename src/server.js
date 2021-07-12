@@ -12,7 +12,7 @@ export const startServer = port => {
         });
     });
     setTimeout(() => {
-        exec('curl http://localhost:' + port);
+        exec('curl http://localhost:' + port + '/src');
     }, 200);
 };
 
