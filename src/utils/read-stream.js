@@ -5,6 +5,8 @@ export const readStream = async request => {
         for await (const chunk of request) body += chunk;
     } catch (e) {
         console.error(e);
+
+        return '';
     }
 
     return body;
