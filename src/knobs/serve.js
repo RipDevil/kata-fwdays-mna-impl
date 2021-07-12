@@ -19,6 +19,6 @@ const _serveContent = async (_, response) => {
 export const serveContent = {
     handler: _serveContent,
     method: 'GET',
-    url: '/',
+    url: '*',
     auth: false,
 };

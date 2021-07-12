@@ -18,7 +18,9 @@ export const startServer = port => {
 
 const server = http.createServer((request, response) => {
     const properKnob = knobs.find(
-        knob => request.method === knob.method && request.url == knob.url
+        knob =>
+            request.method === knob.method &&
+            (request.url == knob.url || knob.url === '*')
     );
 
     if (properKnob) {
