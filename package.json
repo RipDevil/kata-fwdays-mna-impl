@@ -22,5 +22,7 @@
       "prettier --single-quote --arrow-parens=avoid --write"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "formidable": "^1.2.2"
+  }
 }
