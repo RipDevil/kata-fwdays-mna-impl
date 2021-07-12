@@ -19,7 +19,6 @@ const _serveContent = async (request, response) => {
     try {
         await access(absolutePath);
         isDir = (await stat(absolutePath)).isDirectory();
-        console.log('isDir :>> ', isDir);
     } catch (e) {
         response.statusCode = 404;
         response.end();

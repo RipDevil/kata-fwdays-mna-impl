@@ -1,5 +1,6 @@
 import { SessionManager } from '../services/session-service.js';
 import { readStream } from '../utils/read-stream.js';
+import { redirectBack } from './lib/redirect-back.js';
 
 const _performLogin = async (request, response) => {
     const body = await readStream(request);
@@ -20,9 +21,7 @@ const _performLogin = async (request, response) => {
             ].join(';')
         );
 
-        response.statusCode = 302;
-        response.setHeader('Location', `${request.headers.referer}`);
-        response.end();
+        redirectBack(request, response);
     } else {
         response.statusCode = 401;
         response.end();
