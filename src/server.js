@@ -8,7 +8,7 @@ export const startServer = port => {
         console.log('\nThe server is reachable on:');
 
         showPaths(addr => {
-            console.log(`${addr}:${port}`);
+            console.log(`-- ${addr}:${port}`);
         });
     });
     setTimeout(() => {
